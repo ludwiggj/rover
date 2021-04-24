@@ -20,7 +20,13 @@ trait Mover {
         val newDirection = directions(if (currentIndex == 0) numberOfDirections - 1 else currentIndex - 1)
         (p, newDirection)
 
-      case _ => (Position(0,0), Up)
+      case Forward =>
+        d match {
+          case Up => (p.copy(y = p.y + 1), d)
+          case Left => (p.copy(x = p.x - 1), d)
+          case Down => (p.copy(y = p.y - 1), d)
+          case Right => (p.copy(x = p.x + 1), d)
+        }
     }
   }
 }

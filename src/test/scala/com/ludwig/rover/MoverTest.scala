@@ -30,7 +30,7 @@ class MoverTest extends AnyFlatSpec with should.Matchers with BeforeAndAfterAll 
     object Sut extends Mover
     Sut.move(RotateAntiClockwise90, Position(1,1), Left) should equal(Position(1,1), Up)
   }
-  
+
   it should "maintain position and change direction from Up to Right" in {
     object Sut extends Mover
     Sut.move(RotateAntiClockwise90, Position(1,1), Up) should equal(Position(1,1), Right)
@@ -44,5 +44,25 @@ class MoverTest extends AnyFlatSpec with should.Matchers with BeforeAndAfterAll 
   it should "maintain position and change direction from Down to Left" in {
     object Sut extends Mover
     Sut.move(RotateAntiClockwise90, Position(1,1), Down) should equal(Position(1,1), Left)
+  }
+
+  "move forward" should "move up if facing up" in {
+    object Sut extends Mover
+    Sut.move(Forward, Position(1,1), Up) should equal(Position(1,2), Up)
+  }
+
+  it should "move left if facing left" in {
+    object Sut extends Mover
+    Sut.move(Forward, Position(1,1), Left) should equal(Position(0,1), Left)
+  }
+
+  it should "move down if facing down" in {
+    object Sut extends Mover
+    Sut.move(Forward, Position(1,1), Down) should equal(Position(1,0), Down)
+  }
+
+  it should "move right if facing right" in {
+    object Sut extends Mover
+    Sut.move(Forward, Position(1,1), Right) should equal(Position(2,1), Right)
   }
 }
