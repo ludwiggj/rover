@@ -15,6 +15,11 @@ trait Mover {
         val newDirection = directions((directions.indexOf(d) + 1) % numberOfDirections)
         (p, newDirection)
 
+      case RotateAntiClockwise90 =>
+        val currentIndex = directions.indexOf(d)
+        val newDirection = directions(if (currentIndex == 0) numberOfDirections - 1 else currentIndex - 1)
+        (p, newDirection)
+
       case _ => (Position(0,0), Up)
     }
   }
