@@ -18,4 +18,12 @@ class AutoPilotTest extends AnyFlatSpec with should.Matchers with BeforeAndAfter
   it should "be left and up if target is north west" in {
     new AutoPilot().shortestPath(Position(4,0), Position(3,2), fiveByFiveGrid) should equal(List(Left, Up, Up))
   }
+
+  it should "move off grid to left if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(1,2), Position(4,2), fiveByFiveGrid) should equal(List(Left, Left))
+  }
+
+  it should "move off grid to right if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(4,2), Position(1,2), fiveByFiveGrid) should equal(List(Right, Right))
+  }
 }
