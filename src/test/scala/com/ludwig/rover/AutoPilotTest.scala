@@ -26,4 +26,20 @@ class AutoPilotTest extends AnyFlatSpec with should.Matchers with BeforeAndAfter
   it should "move off grid to right if that is nearest path" in {
     new AutoPilot().shortestPath(Position(4,2), Position(1,2), fiveByFiveGrid) should equal(List(Right, Right))
   }
+
+  it should "move off grid upwards if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(1,4), Position(1,0), fiveByFiveGrid) should equal(List(Up))
+  }
+
+  it should "move off grid downwards if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(1,0), Position(1,4), fiveByFiveGrid) should equal(List(Down))
+  }
+
+  it should "move off grid in one direction if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(1,4), Position(2,0), fiveByFiveGrid) should equal(List(Right, Up))
+  }
+
+  it should "move off grid in two directions if that is nearest path" in {
+    new AutoPilot().shortestPath(Position(4,0), Position(0,4), fiveByFiveGrid) should equal(List(Right, Down))
+  }
 }
