@@ -7,14 +7,14 @@ class AutoPilot {
     val yDiffShortest: Int = shortestDistance(start.y, finish.y, gridTopRight.y)
 
     val xMoves = xDiffShortest match {
-      case x if x > 0 => List.fill(x)(Right)
-      case x if x < 0 => List.fill(-x)(Left)
+      case x if x > 0 => List.fill(x)(Direction.Right)
+      case x if x < 0 => List.fill(-x)(Direction.Left)
       case _ => List()
     }
 
     val yMoves = yDiffShortest match {
-      case y if y > 0 => List.fill(y)(Up)
-      case y if y < 0 => List.fill(-y)(Down)
+      case y if y > 0 => List.fill(y)(Direction.Up)
+      case y if y < 0 => List.fill(-y)(Direction.Down)
       case _ => List()
     }
 

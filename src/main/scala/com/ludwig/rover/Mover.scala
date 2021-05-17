@@ -6,35 +6,53 @@ case object RotateClockwise90 extends MoveInstruction
 case object RotateAntiClockwise90 extends MoveInstruction
 
 trait Mover {
-  private val directions: List[Direction] = List(Up, Left, Down, Right)
-  private val numberOfDirections = directions.size
 
-  def move(m: MoveInstruction, p: Position, d: Direction, gridTopRight: Position): (Position, Direction) = {
-    m match {
-      case RotateClockwise90 =>
-        val newDirection = directions((directions.indexOf(d) + 1) % numberOfDirections)
-        (p, newDirection)
+  def rotateClockwise(d: Direction): Direction = d match {
+    case Direction.Up => Direction.Right
+    case Direction.Right => Direction.Down
+    case Direction.Down => Direction.Left
+    case Direction.Left => Direction.Up
+  }
 
-      case RotateAntiClockwise90 =>
-        val currentIndex = directions.indexOf(d)
-        val newDirection = directions(if (currentIndex == 0) numberOfDirections - 1 else currentIndex - 1)
-        (p, newDirection)
+  def rotateAntiClockwise(d: Direction): Direction = d match {
+    case Direction.Up => Direction.Left
+    case Direction.Left => Direction.Down
+    case Direction.Down => Direction.Right
+    case Direction.Right => Direction.Up
+  }
 
-      case Forward =>
-        d match {
-          case Up =>
-            val newY = if (p.y == gridTopRight.y) 0 else p.y + 1
-            (p.copy(y = newY), d)
-          case Left =>
-            val newX = if (p.x == 0) gridTopRight.x else p.x - 1
-            (p.copy(x = newX), d)
-          case Down =>
-            val newY = if (p.y == 0) gridTopRight.y else p.y - 1
-            (p.copy(y = newY), d)
-          case Right =>
-            val newX = if (p.x == gridTopRight.x) 0 else p.x + 1
-            (p.copy(x = newX), d)
-        }
+  def offGrid(p: Position, gridTopRight: Position): Boolean =
+    (p.x > gridTopRight.x) || (p.y > gridTopRight.y)
+
+
+  def move(m: MoveInstruction, p: Position, d: Direction, gridTopRight: Position): Either[Exception, (Position, Direction)] = {
+    if (offGrid(p, gridTopRight)) {
+      Left(new IllegalArgumentException(s"Position $p is outside grid $gridTopRight"))
+    }
+    else {
+      m match {
+        case RotateClockwise90 =>
+          Right((p, rotateClockwise(d)))
+
+        case RotateAntiClockwise90 =>
+          Right((p, rotateAntiClockwise(d)))
+
+        case Forward =>
+          d match {
+            case Direction.Up =>
+              val newY = if (p.y == gridTopRight.y) 0 else p.y + 1
+              Right((p.copy(y = newY), d))
+            case Direction.Left =>
+              val newX = if (p.x == 0) gridTopRight.x else p.x - 1
+              Right((p.copy(x = newX), d))
+            case Direction.Down =>
+              val newY = if (p.y == 0) gridTopRight.y else p.y - 1
+              Right((p.copy(y = newY), d))
+            case Direction.Right =>
+              val newX = if (p.x == gridTopRight.x) 0 else p.x + 1
+              Right((p.copy(x = newX), d))
+          }
+      }
     }
   }
 }

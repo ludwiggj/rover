@@ -1,4 +1,4 @@
-name := "rover"
+name := "scala-rover"
 
 version := "0.1"
 
